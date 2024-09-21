@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #f8f9fa;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        span {
+            font-size: 16px;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .done-btn, .delete-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .done-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+        .done-btn:disabled {
+            background-color: #ced4da;
+            cursor: not-allowed;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Todo App</h1>
+    <form method="post" action="/addTodo">
+        <input type="text" name="todo" placeholder="할일을 입력하세요..." />
+        <input type="submit" value="Add Todo" />
+    </form>
+    <hr />
+    <ul>
+        <li th:each="todo : ${todos}">
+            <span th:text="${todo.todo}"></span>
+            <div class="buttons">
+                <form action="/doneTodo" method="post" style="display:inline;">
+                    <input type="hidden" name="id" th:value="${todo.id}" />
+                    <button class="done-btn" th:disabled="${todo.done}">Done</button>
+                </form>
+                <form action="/deleteTodo" method="post" style="display:inline;">
+                    <input type="hidden" name="id" th:value="${todo.id}" />
+                    <button class="delete-btn">Delete</button>
+                </form>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
